@@ -1,0 +1,5 @@
+package practices;
+
+class FirstPracticesTest {
+
+}
