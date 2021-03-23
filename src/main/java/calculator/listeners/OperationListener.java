@@ -7,15 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class OperationListener implements ActionListener {
-    private final JTextField firstNumber;
-    private final JTextField operation;
-    private final JTextField secondNumber;
+    private final JTextField firstInputField;
+    private final JTextField operationField;
+    private final JTextField secondInputField;
     private final Blogic blogic;
+    private final String error = "Error";
 
-    public OperationListener(JTextField firstNumber, JTextField operation, JTextField secondNumber) {
-        this.firstNumber = firstNumber;
-        this.operation = operation;
-        this.secondNumber = secondNumber;
+    public OperationListener(JTextField firstInputField, JTextField operationField, JTextField secondInputField) {
+        this.firstInputField = firstInputField;
+        this.operationField = operationField;
+        this.secondInputField = secondInputField;
         this.blogic = new Blogic();
     }
 
@@ -23,76 +24,75 @@ public class OperationListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "+":
-                operation.setText("+");
-                resetTextFields();
+                operationField.setText("+");
+                swapFields();
                 break;
             case "-":
-                operation.setText("-");
-                resetTextFields();
+                operationField.setText("-");
+                swapFields();
                 break;
             case "*":
-                operation.setText("*");
-                resetTextFields();
+                operationField.setText("*");
+                swapFields();
                 break;
             case "/":
-                operation.setText("/");
-                resetTextFields();
+                operationField.setText("/");
+                swapFields();
                 break;
             case "=":
-                choseOperationAndCalculate();
+                executeOperation();
                 break;
         }
     }
 
-
-    private void cleanFieldAndSetAnswer(double answer) {
-        firstNumber.setText("");
-        operation.setText("");
-        String answerStr = String.valueOf(answer);
-        String afterDot = answerStr.substring(answerStr.lastIndexOf(".") + 1);
-        if (afterDot.length() == 1 && afterDot.equals("0")) {
-            secondNumber.setText(String.valueOf((int) answer));
-        } else {
-            secondNumber.setText(String.valueOf(answer));
-        }
-    }
-
-    private void resetTextFields() {
-        firstNumber.setText(secondNumber.getText());
-        secondNumber.setText("");
-    }
-
-    private void printErrorMessage(String message) {
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void choseOperationAndCalculate() {
-        if (firstNumber.getText().equals(".")) {
-            firstNumber.setText("");
-            operation.setText("");
-            secondNumber.setText("");
+    private void executeOperation() {
+        if (firstInputField.getText().equals(".")) {
+            firstInputField.setText("");
+            operationField.setText("");
+            secondInputField.setText("");
             return;
         }
-        switch (operation.getText()) {
+        switch (operationField.getText()) {
             case "+":
-                cleanFieldAndSetAnswer(blogic.plus(Double.parseDouble(firstNumber.getText()), Double.parseDouble(secondNumber.getText())));
+                showResult(blogic.plus(Double.parseDouble(firstInputField.getText()), Double.parseDouble(secondInputField.getText())));
                 break;
             case "-":
-                cleanFieldAndSetAnswer(blogic.minus(Double.parseDouble(firstNumber.getText()), Double.parseDouble(secondNumber.getText())));
+                showResult(blogic.minus(Double.parseDouble(firstInputField.getText()), Double.parseDouble(secondInputField.getText())));
                 break;
             case "*":
-                cleanFieldAndSetAnswer(blogic.multiply(Double.parseDouble(firstNumber.getText()), Double.parseDouble(secondNumber.getText())));
+                showResult(blogic.multiply(Double.parseDouble(firstInputField.getText()), Double.parseDouble(secondInputField.getText())));
                 break;
             case "/":
                 try {
-                    cleanFieldAndSetAnswer(blogic.division(Double.parseDouble(firstNumber.getText()), Double.parseDouble(secondNumber.getText())));
+                    showResult(blogic.division(Double.parseDouble(firstInputField.getText()), Double.parseDouble(secondInputField.getText())));
                 } catch (IllegalArgumentException e) {
-                    firstNumber.setText("");
-                    operation.setText("");
-                    secondNumber.setText("");
-                    printErrorMessage(e.getMessage());
+                    firstInputField.setText("");
+                    operationField.setText("");
+                    secondInputField.setText("");
+                    showErrorMessage(e.getMessage());
                 }
                 break;
         }
+    }
+
+    private void swapFields() {
+        firstInputField.setText(secondInputField.getText());
+        secondInputField.setText("");
+    }
+
+    private void showResult(double answer) {
+        firstInputField.setText("");
+        operationField.setText("");
+        String answerStr = String.valueOf(answer);
+        String afterDot = answerStr.substring(answerStr.lastIndexOf(".") + 1);
+        if (afterDot.length() == 1 && afterDot.equals("0")) {
+            secondInputField.setText(String.valueOf((int) answer));
+        } else {
+            secondInputField.setText(String.valueOf(answer));
+        }
+    }
+
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(null, message, error, JOptionPane.ERROR_MESSAGE);
     }
 }
