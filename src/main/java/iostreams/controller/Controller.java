@@ -32,12 +32,12 @@ public class Controller {
         }
 
         if (secondMode) {
-            addToFileStart(strings, fileBox);
+            addDataToStartFile(strings, fileBox);
         }
     }
 
 
-    private void addToFileStart(List<String> strings, File file) {
+    private void addDataToStartFile(List<String> strings, File file) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true))) {
             for (String s : strings) {
                 bufferedWriter.write(s);
