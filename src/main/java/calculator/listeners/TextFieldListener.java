@@ -8,7 +8,6 @@ public class TextFieldListener implements ActionListener {
     private final JTextField firstNumber;
     private final JTextField operation;
     private final JTextField secondNumber;
-    private final String backspace = "Backspace";
     private final String clear = "C";
 
     public TextFieldListener(JTextField firstNumber, JTextField operation, JTextField secondNumber) {
@@ -19,15 +18,12 @@ public class TextFieldListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case clear:
-                firstNumber.setText("");
-                operation.setText("");
-                secondNumber.setText("");
-                break;
-            case backspace:
-                secondNumber.setText(secondNumber.getText().substring(0, secondNumber.getText().length() - 1));
-                break;
+        if (e.getActionCommand().equals(clear)) {
+            firstNumber.setText("");
+            operation.setText("");
+            secondNumber.setText("");
+        } else {
+            secondNumber.setText(secondNumber.getText().substring(0, secondNumber.getText().length() - 1));
         }
     }
 }
