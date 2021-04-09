@@ -2,6 +2,7 @@ package painterball1.container;
 
 import painterball1.ballmodel.JustBall;
 import painterball1.listeners.CanvasListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
