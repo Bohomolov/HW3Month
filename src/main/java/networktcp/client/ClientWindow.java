@@ -7,11 +7,9 @@ import java.net.Socket;
 
 public class ClientWindow {
     public static void main(String[] args) {
-        try {
-            Socket clientSocket =  new Socket("localhost", 3081);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int i = 259;
+        byte b = 0;
+        System.out.println( (byte) i);
     }
 }
+
